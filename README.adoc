@@ -100,8 +100,43 @@ image::soncikti.png[soncikti,800,480,align="center"]
 
 ==== Kaynak Klasör İçindeki Dokümanların İncelenmesi
 
+--PROJECTİON BASED 3D LASER SCANNER--
+-Kurulum ve Hedef-
+Kurulum
+Video,bir lazer çizgisinin nesnenin üzerinde hareket ettiği, köşede yer alıyor.
+90 derece açı bulunuyor
+Her iki duvarda dama tahtaları bulunuyor
+Arkaplanda değişiklik yok
+Kamera otomatik ayarlanmıyor
 
-==== Baaska veri seti ile calistirmasi
+HEDEF
+Nesnenin 3D modellenmesi
+3D nokta bulutu(X,Y,Z)
+Nokta renkleri(R,G,B)
+
+ADIM 1-Laser Çizgileri Algılama
+Her çerçeve için lazer çizgisi olmayan çerçeve farkı hesaplanır.
+Kırmızı pikselleri bulunur ve vurgulanır
+2'den daha az kırmızı komşusu olan tüm kırmızı pikselleri çıkarıp gürültünün bir kısmından kurtulun
+Hatları algılamak için Hough dönüşümünü kullanılır ve yeşil renkte çizilir
+
+ADIM 2-3D Object Points
+Nesneye ait olan noktaların pikselleri göz önüne alındığında, 3D nokta bulutu almak istiyoruz.
+Önce kamerayı kalibre etmeniz gerekiyor - İçsel ve dışsal parametreleri bulun.
+Lazer çizgilerinden doğrusal olmayan 3 noktayı alarak lazer düzlemini bulunuz.
+Kameradan ve lazer düzleminden başlayarak ışınların kesiştiği noktalar olarak 3D koordinatları bulun.
+
+Nokta bulutunu görüntülemek için görüntüleme programı kullanılır.
+
+ADIM 3-Using SLAM6D
+Teorik olarak slam6D programı, birkaç nokta bulutunu eşleştirebilir ve bunları aynı referans çerçevesine yerleştirebilir.
+Pratikte, birden fazla veri seti kullanırken eşleştirme işlemi çok iyi sonuç vermedi.
+Olası nedeni:
+.pose dosyalarının manuel olarak ayarlanması hatalara açıktır.
+Kullanılmış kümeler daha yüksek örtüşme (daha küçük dönme açısı) gerektirebilir.
+
+
+==== Başka veri seti ile calistirmasi
 
 Bu veri seti http://kos.informatik.uni-osnabrueck.de/3Dscans/ Hannover1 adli veri seti kullandik,çunku boyut olarak idealdi. Diğer veri setiler büyük boyutla olduğu için test edemedik. Veri indirtikren sonra, verinin lokasiyoun aldiktan sonra 
 *Bu komutu calismamiz lazim, veriler test etmek icin*[source,java]
@@ -112,12 +147,7 @@ komutu ile :
 
 image::Hanover_dataSet1.PNG[Hanover_dataSet1,480,80,align="center"]
 
-Aşağıdaki veri seti üzerinde işlem yapmaya çalıştık. Ancak veri seti boyutu 8.8 gb gibi büyük bir değer olduğu için sanal makine için sıkıntı oluşabileceğinden dolayı kullanamadık.
-
 image::Hanover_dataSet2.PNG[Hanover_dataSet2,480,320,align="center"]
-
-Küçük boyuta sahip hannover veri seti üzerinde deneme yapabildik. İşlemler sonucunda elde ettiğimiz görüntü aşağıda yer almaktadır.
-
 
 image::Hanover_dataSet.PNG[Hanover_dataSet,800,480,align="center"]
 
